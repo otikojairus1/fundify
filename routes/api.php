@@ -19,7 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+//official api routes
+Route::post('/test', [RegisterUsersController::class, 'store2']);
 Route::post('/register', [RegisterUsersController::class, 'store']);
 Route::post('/login', [RegisterUsersController::class, 'login']);
 Route::post('/create/contribution', [ContributionController::class, 'contribute']);
