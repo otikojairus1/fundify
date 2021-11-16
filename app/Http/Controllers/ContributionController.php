@@ -120,13 +120,14 @@ class ContributionController extends Controller
 
 //adding amount
         $contributionUpdate = Contribution::where('id', $request->id)->first();
-        $contributionUpdate->amount = $contributionUpdate->amount + $amount;
+        //dd($contributionUpdate->amount);
+        $contributionUpdate->amount = $contributionUpdate->amount + $request->amount;
         $contributionUpdate->save();
         //updating pending transaction table
         $pending = new PendingTransaction();
        $pending->CheckoutRequestID = "TransactionCheckoutID";
         $pending->phone = $request->phone;
-        $pending->amount = $request->amount;
+        $pending->amount =  $request->amount;
         $pending->contributionId = $request->id;
         $pending->save();
 
