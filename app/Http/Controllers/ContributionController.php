@@ -47,87 +47,87 @@ class ContributionController extends Controller
            return response()->json(['success' => false, 'error' => $validator->messages()]);
        }
 
-       $url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
-      // $url = 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+//        $url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+//       // $url = 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
 
-       $curl = curl_init();
-       curl_setopt($curl, CURLOPT_URL, $url);
-       $credentials = base64_encode('D5VGIIfdrsmTHv7dCwGyo4hubU2YFFxN:XelQksS4JcMXfVMI');
-       curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Basic '.$credentials)); //setting a custom header
-       curl_setopt($curl, CURLOPT_HEADER, false);
-       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-       curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+//        $curl = curl_init();
+//        curl_setopt($curl, CURLOPT_URL, $url);
+//        $credentials = base64_encode('D5VGIIfdrsmTHv7dCwGyo4hubU2YFFxN:XelQksS4JcMXfVMI');
+//        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Basic '.$credentials)); //setting a custom header
+//        curl_setopt($curl, CURLOPT_HEADER, false);
+//        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+//        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 
-       $curl_response = curl_exec($curl);
+//        $curl_response = curl_exec($curl);
 
-       $responce = json_decode($curl_response)->access_token;
-       //dd($responce["access_token"]);
-       //dd($responce->access_token);
-       $accessToken = $responce; // access token here
-
-
-       //mpesa user credentials
-       $mpesaOnlineShortcode = "174379";
-       $BusinessShortCode = $mpesaOnlineShortcode;
-       $partyA = $request->phone;
-       $partyB = $BusinessShortCode;
-       $phoneNumber = $partyA;
-       $mpesaOnlinePasskey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-       date_default_timezone_set('Africa/Nairobi');
-       $timestamp =  date('YmdHis');
-       $amount = $request->amount;
-       $contribution = $request->id;
-       $dataToEncode = $BusinessShortCode.$mpesaOnlinePasskey.$timestamp;
-       //dd($dataToEncode);
-       $password = base64_encode($dataToEncode);
-       //dd($password);
-
-       //payment request to safaricom
-
-       $url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-       //$url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-
-       $curl = curl_init();
-       curl_setopt($curl, CURLOPT_URL, $url);
-       curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Authorization:Bearer '.$accessToken)); //setting custom header
+//        $responce = json_decode($curl_response)->access_token;
+//        //dd($responce["access_token"]);
+//        //dd($responce->access_token);
+//        $accessToken = $responce; // access token here
 
 
-       $curl_post_data = array(
-           'BusinessShortCode' => $BusinessShortCode,
-           'Password' => $password,
-           'Timestamp' => $timestamp,
-           'TransactionType' => 'CustomerPayBillOnline',
-           'Amount' =>$amount,
-           'PartyA' => $partyA,
-           'PartyB' => $partyB,
-           'PhoneNumber' => $partyA,
-           'AccountReference'=>$contribution,
-           'CallBackURL' => 'https://msaadaproject.herokuapp.com/api/v2/74aqaGu3sd4/callback',
-           'TransactionDesc' => 'DONATING'
-       );
+//        //mpesa user credentials
+//        $mpesaOnlineShortcode = "174379";
+//        $BusinessShortCode = $mpesaOnlineShortcode;
+//        $partyA = $request->phone;
+//        $partyB = $BusinessShortCode;
+//        $phoneNumber = $partyA;
+//        $mpesaOnlinePasskey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+//        date_default_timezone_set('Africa/Nairobi');
+//        $timestamp =  date('YmdHis');
+//        $amount = $request->amount;
+//        $contribution = $request->id;
+//        $dataToEncode = $BusinessShortCode.$mpesaOnlinePasskey.$timestamp;
+//        //dd($dataToEncode);
+//        $password = base64_encode($dataToEncode);
+//        //dd($password);
 
-       $data_string = json_encode($curl_post_data);
+//        //payment request to safaricom
 
-       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-       curl_setopt($curl, CURLOPT_POST, true);
-       curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+//        $url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+//        //$url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 
-       $curl_response = curl_exec($curl);
-   // print_r($curl_response);
+//        $curl = curl_init();
+//        curl_setopt($curl, CURLOPT_URL, $url);
+//        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Authorization:Bearer '.$accessToken)); //setting custom header
 
-       ///dd($curl_response);
-        $data = json_decode($curl_response);
+
+//        $curl_post_data = array(
+//            'BusinessShortCode' => $BusinessShortCode,
+//            'Password' => $password,
+//            'Timestamp' => $timestamp,
+//            'TransactionType' => 'CustomerPayBillOnline',
+//            'Amount' =>$amount,
+//            'PartyA' => $partyA,
+//            'PartyB' => $partyB,
+//            'PhoneNumber' => $partyA,
+//            'AccountReference'=>$contribution,
+//            'CallBackURL' => 'https://msaadaproject.herokuapp.com/api/v2/74aqaGu3sd4/callback',
+//            'TransactionDesc' => 'DONATING'
+//        );
+
+//        $data_string = json_encode($curl_post_data);
+
+//        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+//        curl_setopt($curl, CURLOPT_POST, true);
+//        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+
+//        $curl_response = curl_exec($curl);
+//    // print_r($curl_response);
+
+//        ///dd($curl_response);
+//         $data = json_decode($curl_response);
 
 //adding amount
-        $contributionUpdate = Contribution::where('id', $contribution)->first();
+        $contributionUpdate = Contribution::where('id', $request->id)->first();
         $contributionUpdate->amount = $contributionUpdate->amount + $amount;
         $contributionUpdate->save();
         //updating pending transaction table
         $pending = new PendingTransaction();
-       $pending->CheckoutRequestID = $data->CheckoutRequestID;
-        $pending->phone = $partyA;
-        $pending->amount = $amount;
-        $pending->contributionId = $contribution;
+       $pending->CheckoutRequestID = "TransactionCheckoutID";
+        $pending->phone = $request->phone;;
+        $pending->amount = $request->amount;;
+        $pending->contributionId = $request->id;
         $pending->save();
 
             return response()->json(['responceStatusCode'=>'200' ,'data'=>[
