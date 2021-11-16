@@ -133,7 +133,7 @@ class ContributionController extends Controller
             return response()->json(['responceStatusCode'=>'200' ,'data'=>[
            'message'=>"Request accepted from safaricom, pin prompt sent successfully",
            'expectedAction' => 'query the callback api endpoint to update the UI',
-           'callbackinfo'=>$curl_response, // ->CheckoutRequestID
+           'callbackinfo'=>"curl_response", // ->CheckoutRequestID
        ]]);
 
 
