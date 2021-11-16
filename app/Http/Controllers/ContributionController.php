@@ -125,8 +125,8 @@ class ContributionController extends Controller
         //updating pending transaction table
         $pending = new PendingTransaction();
        $pending->CheckoutRequestID = "TransactionCheckoutID";
-        $pending->phone = $request->phone;;
-        $pending->amount = $request->amount;;
+        $pending->phone = $request->phone;
+        $pending->amount = $request->amount;
         $pending->contributionId = $request->id;
         $pending->save();
 
